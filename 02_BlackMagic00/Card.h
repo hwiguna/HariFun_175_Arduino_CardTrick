@@ -3,9 +3,12 @@
 
 #include "Arduino.h"
 
+String suits = "CDHS"; // Club Diamond Heart Spade
+
 class Card {
   public:
     Card(byte value, char suit);
+    Card();
     void Card::SetStatus(byte newStatus);
     byte Card::GetStatus();
     byte Card::GetValue();
@@ -23,6 +26,12 @@ Card::Card(byte value, char suit)
 {
   _value = value;
   _suit = suit;
+}
+
+Card::Card()
+{
+  _value = 0;
+  _suit = ' ';
 }
 
 void Card::SetStatus(byte newStatus) {

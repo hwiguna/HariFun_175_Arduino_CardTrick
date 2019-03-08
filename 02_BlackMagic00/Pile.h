@@ -13,14 +13,16 @@ class Pile {
     Card RemoveTopCard();
     void PrintAll();
     void Shuffle();
-    bool Pile::IsBlackCard( Card card );
-    Card TakeBlackCard();
-    Card TakeNonBlackCard();
+    Card TakeMarkerCard(Card chosenCard);
+    Card TakeNonMarkerCard(Card chosenCard);
     void RemoveByIndex(byte index);
     void UnitTest();
   private:
     Card _cards[52];
     byte _numberOfCards;
+
+    bool IsBlackCard(Card card);
+    bool IsMarkerCard(Card card);
 };
 
 //=== IMPLEMENTATION ===
@@ -87,10 +89,15 @@ void Pile::RemoveByIndex(byte index) {
   _numberOfCards--;
 }
 
-Card Pile::TakeBlackCard() {
+bool Pile::IsMarkerCard(Card card) {
+  return IsBlackCard(card) && card.IsOdd();
+}
+
+Card Pile::TakeMarkerCard(Card chosenCard) {
   Card result = blankCard;
   for (byte i = 0; i < _numberOfCards; i++) {
-    if (IsBlackCard(_cards[i])) {
+    Card card = _cards[i];
+    if (IsMarkerCard(card) && (card.Value()!=chosenCard.Value()) && (card.Suit()!=chosenCard.Suit())) {
       result = _cards[i];
       RemoveByIndex(i);
       break;
@@ -99,11 +106,13 @@ Card Pile::TakeBlackCard() {
   return result;
 }
 
-Card Pile::TakeNonBlackCard() {
+
+Card Pile::TakeNonMarkerCard(Card chosenCard) {
   Card result = blankCard;
   for (byte i = 0; i < _numberOfCards; i++) {
-    if (!IsBlackCard(_cards[i])) {
-      result = _cards[i];
+    Card card = _cards[i];
+    if (!IsMarkerCard(card) && (card.Value()!=chosenCard.Value()) && (card.Suit()!=chosenCard.Suit())) {
+      result = card;
       RemoveByIndex(i);
       break;
     }
@@ -132,8 +141,8 @@ void Pile::UnitTest() {
   Shuffle();
   PrintAll();
 
-  Serial.println("\TOP BLACK:");
-  topCard = TakeBlackCard();
+  Serial.println("\TOP MARKER:");
+  topCard = TakeMarkerCard(Card(0,0));
   topCard.Print();
 }
 #endif

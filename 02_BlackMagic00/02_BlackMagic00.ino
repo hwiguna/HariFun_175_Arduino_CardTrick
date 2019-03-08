@@ -18,7 +18,7 @@ void setup() {
   deck.Shuffle();
 
   Magician shinLim = Magician(deck);
-  shinLim.SetChosenCard( Card(QUEEN,HEART) );
+  shinLim.SetChosenCard( Card(7,CLUB) );
   shinLim.PerformMagic();
 }
 

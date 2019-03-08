@@ -22,6 +22,7 @@ class Card {
     String SuitToString(byte suit);
     String CardToString();
     void Print();
+    bool IsOdd();
 
     byte Value(); // 1..12
     byte Suit(); // 1..4
@@ -29,6 +30,7 @@ class Card {
   private:
     byte _value;
     char _suit;
+
 };
 
 //=== IMPLEMENTATION ===
@@ -82,6 +84,10 @@ String Card::CardToString() {
 
 void Card::Print() {
   Serial.println( CardToString() );
+}
+
+bool Card::IsOdd() {
+  return (_value % 2) != 0;
 }
 
 //=== GLOBAL CONSTANTS ===

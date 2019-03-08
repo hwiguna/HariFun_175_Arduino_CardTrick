@@ -3,76 +3,89 @@
 
 #include "Arduino.h"
 
-String suits = "CDHS"; // Club Diamond Heart Spade
+#define CLUB 1
+#define DIAMOND 2
+#define HEART 3
+#define SPADE 4
+
+#define ACE 1
+#define JACK 10
+#define QUEEN 11
+#define KING 12
 
 class Card {
   public:
-    Card(byte value, char suit);
+    Card(byte inValue, byte inSuit);
     Card();
-    void Card::SetStatus(byte newStatus);
-    byte Card::GetStatus();
-    byte Card::GetValue();
-    char Card::GetSuit();
-    String Card::ValueToString(byte value);
-    String Card::SuitToString(char suit);
-    String Card::GetCard();
+
+    String ValueToString(byte value);
+    String SuitToString(byte suit);
+    String CardToString();
+    void Print();
+
+    byte Value(); // 1..12
+    byte Suit(); // 1..4
+
   private:
     byte _value;
     char _suit;
-    byte _status; // 0=unplayed, 1=in play, 2=discarded
 };
 
-Card::Card(byte value, char suit)
+//=== IMPLEMENTATION ===
+
+Card::Card(byte inValue, byte inSuit)
 {
-  _value = value;
-  _suit = suit;
+  _value = inValue;
+  _suit = inSuit;
 }
 
 Card::Card()
 {
   _value = 0;
-  _suit = ' ';
+  _suit = 0;
 }
 
-void Card::SetStatus(byte newStatus) {
-  _status = newStatus;
-}
-
-byte Card::GetStatus() {
-  return _status;
-}
-
-byte Card::GetValue() {
+byte Card::Value() {
   return _value;
 }
 
-char Card::GetSuit() {
+byte Card::Suit() {
   return _suit;
 }
 
 String Card::ValueToString(byte value) {
   String result = "?";
   switch (value) {
-    case 1: result = "Ace"; break;
-    case 10: result = "Jack"; break;
-    case 11: result = "Queen"; break;
-    case 12: result = "King"; break;
+    case ACE: result = "Ace"; break;
+    case JACK: result = "Jack"; break;
+    case QUEEN: result = "Queen"; break;
+    case KING: result = "King"; break;
     default: result = String(value); break;
   }
+  return result;
 }
 
-String Card::SuitToString(char suitCode) {
-  String suit = "?";
-  switch (suitCode) {
-    case 'C': suit = "Club"; break;
-    case 'D': suit = "Diamond"; break;
-    case 'H': suit = "Heart"; break;
-    case 'S': suit = "Spade"; break;
+String Card::SuitToString(byte suit) {
+  String result = "?";
+  switch (suit) {
+    case CLUB: result = "Club"; break;
+    case DIAMOND: result = "Diamond"; break;
+    case HEART: result = "Heart"; break;
+    case SPADE: result = "Spade"; break;
   }
+  return result;
 }
 
-String Card::GetCard() {
+String Card::CardToString() {
   return ValueToString(_value) + " of " + SuitToString(_suit);
 }
+
+void Card::Print() {
+  Serial.println( CardToString() );
+}
+
+//=== GLOBAL CONSTANTS ===
+
+const Card blankCard = Card(0,0);
 
 #endif

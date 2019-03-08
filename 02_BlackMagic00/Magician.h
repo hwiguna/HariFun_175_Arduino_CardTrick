@@ -22,23 +22,34 @@ Magician::SetChosenCard(Card chosenCard) {
 Magician::PerformMagic(byte numberOfGuesses) {
   Serial.println("\nPresenting ShinLim!");
   bool hasShownMarker = false;
-  bool isFirstPage = true;
+  bool hasShownChosenCard = false;
 
-  do until (hasShownMarker && hasShownChosenCard) {
+  while (!hasShownChosenCard) {
     Card card1 = blankCard;
     Card card2 = blankCard;
 
     if (!hasShownMarker) { // Have we shown marker yet? NO
-      bool isTimeForMarker = Random(0, 2) == 0; // Fifty-fifty chance if we should show marker card now
+      bool isTimeForMarker = random(0, 2) == 0; // Fifty-fifty chance if we should show marker card now
       if (isTimeForMarker) { // Is it time to show marker? YES
-        if (isFirstPage) { // 
-          card1 =  _deck.TakeMarkerCard(_chosenCard); // On first page,
-          card2 = _chosenCard;
-          hasShownMarker = true;
+        bool showChosenOnSamePage = random(0, 2) == 0; // Fifty-fifty chance if we should show chosen card on same page as marker card
+        if (showChosenOnSamePage) { // 
+          card1 =  _deck.TakeMarkerCard(_chosenCard); // Show marker card...
+          card2 = _chosenCard; // immediately follow with chosen card on same page.
+          hasShownChosenCard = true;
+        } else {
+          card1 =  _deck.TakeNonMarkerCard(_chosenCard); // show random non-marker card
+          card2 =  _deck.TakeMarkerCard(_chosenCard); // show marker card to indicate that first card on next page is chosen card. 
         }
+        hasShownMarker = true;
       }
 
-      ShowTwoCards(isFirstPage);
+      if (hasShownMarker && !hasShownChosenCard) {
+          card1  = _chosenCard;
+          card2 =  _deck.TakeNonMarkerCard(_chosenCard); // show random non-marker card
+      }
+
+      card1.Print();
+      card2.Print();
     }
   }
 

@@ -23,6 +23,7 @@ class Card {
     String CardToString();
     void Print();
     bool IsOdd();
+    void Swap(Card &card1, Card &card2);
 
     byte Value(); // 1..12
     byte Suit(); // 1..4
@@ -34,6 +35,12 @@ class Card {
 };
 
 //=== IMPLEMENTATION ===
+
+void Card::Swap(Card &card1, Card &card2) {
+    Card temp = card1;
+    card1 = card2;
+    card2 = temp;
+}
 
 Card::Card(byte inValue, byte inSuit)
 {

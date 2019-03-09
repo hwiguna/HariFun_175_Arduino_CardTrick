@@ -2,7 +2,7 @@ class Magician {
   public:
     Magician(Pile deck);
     SetChosenCard(Card chosenCard);
-    PerformMagic(byte numberOfGuesses);
+    PerformMagic();
   private:
     Card _chosenCard;
     Pile _deck;
@@ -17,10 +17,13 @@ Magician::Magician(Pile deck) {
 
 Magician::SetChosenCard(Card chosenCard) {
   _chosenCard = chosenCard;
+  byte index = _deck.RemoveCard(_chosenCard);
+  Serial.print("\nRemoved chosen card from location ");
+  Serial.println(index);
 }
 
-Magician::PerformMagic(byte numberOfGuesses) {
-  Serial.println("\nPresenting ShinLim!");
+Magician::PerformMagic() {
+  Serial.println("\nWas it one of these cards?");
   bool hasShownMarker = false;
   bool hasShownChosenCard = false;
 
@@ -31,46 +34,35 @@ Magician::PerformMagic(byte numberOfGuesses) {
     if (!hasShownMarker) { // Have we shown marker yet? NO
       bool isTimeForMarker = random(0, 2) == 0; // Fifty-fifty chance if we should show marker card now
       if (isTimeForMarker) { // Is it time to show marker? YES
-        bool showChosenOnSamePage = random(0, 2) == 0; // Fifty-fifty chance if we should show chosen card on same page as marker card
-        if (showChosenOnSamePage) { // 
-          card1 =  _deck.TakeMarkerCard(_chosenCard); // Show marker card...
+        bool showChosenOnSamePage = random(0, 2) == 0; // Fifty-fifty chance if we should show chosen card on same page as marker card or on next page
+        if (showChosenOnSamePage) { //
+          card1 =  _deck.TakeMarkerCard(); // Show marker card...
           card2 = _chosenCard; // immediately follow with chosen card on same page.
           hasShownChosenCard = true;
         } else {
-          card1 =  _deck.TakeNonMarkerCard(_chosenCard); // show random non-marker card
-          card2 =  _deck.TakeMarkerCard(_chosenCard); // show marker card to indicate that first card on next page is chosen card. 
+          card1 =  _deck.TakeNonMarkerCard(); // show random non-marker card
+          card2 =  _deck.TakeMarkerCard(); // show marker card to indicate that first card on next page is chosen card.
         }
-        hasShownMarker = true;
+        hasShownMarker = true; // either way, we would have shown marker.
       }
-
-      if (hasShownMarker && !hasShownChosenCard) {
-          card1  = _chosenCard;
-          card2 =  _deck.TakeNonMarkerCard(_chosenCard); // show random non-marker card
+      else { // Not time to show marker yet, so just show two random cards.
+          card1 =  _deck.TakeNonMarkerCard(); // show random non-marker card
+          card2 =  _deck.TakeNonMarkerCard(); // show random non-marker card
       }
-
-      card1.Print();
-      card2.Print();
     }
+    else { // We have shown marker on previous page, so it's time to show chosen card
+      if (!hasShownChosenCard) {
+        card1  = _chosenCard;
+        card2 =  _deck.TakeNonMarkerCard(); // show random non-marker card
+        hasShownChosenCard = true;
+      }
+    }
+
+    card1.Print();
+    card2.Print();
+    Serial.println();
   }
 
-  byte maxAttempts = numberOfGuesses;
-  for (byte attempt = 0; attempt < maxAttempts; attempt++) {
-    // If this is the attempt before we're supposed to reveal...
-    if (attempt == (maxAttempts - 1)) {
-      // Show an odd black card or even red card
-      Card markerCard = _deck.TakeMarkerCard(_chosenCard);
-      markerCard.Print();
-      _chosenCard.Print();
-    }
-    else {
-      Card markerCard = _deck.TakeNonMarkerCard(_chosenCard);
-      markerCard.Print();
-    }
-
-    if ((attempt % 2) != 0) {
-      Serial.println();
-      delay(1000);
-    }
-  }
+  Serial.println("Take a bow!\n");
 }
 

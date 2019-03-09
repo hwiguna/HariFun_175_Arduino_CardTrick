@@ -36,22 +36,14 @@ class Card {
 
 //=== IMPLEMENTATION ===
 
-void Card::Swap(Card &card1, Card &card2) {
-    Card temp = card1;
-    card1 = card2;
-    card2 = temp;
-}
-
-Card::Card(byte inValue, byte inSuit)
-{
-  _value = inValue;
-  _suit = inSuit;
-}
-
-Card::Card()
-{
+Card::Card() {
   _value = 0;
   _suit = 0;
+}
+
+Card::Card(byte inValue, byte inSuit) {
+  _value = inValue;
+  _suit = inSuit;
 }
 
 byte Card::Value() {
@@ -63,8 +55,13 @@ byte Card::Suit() {
 }
 
 String Card::ValueToString(byte value) {
+  //12345789*123456
+  //seven of diamonds
+  //eight
+  //
   String result = "?";
   switch (value) {
+    case 2: 
     case ACE: result = "Ace"; break;
     case JACK: result = "Jack"; break;
     case QUEEN: result = "Queen"; break;
@@ -77,10 +74,10 @@ String Card::ValueToString(byte value) {
 String Card::SuitToString(byte suit) {
   String result = "?";
   switch (suit) {
-    case CLUB: result = "Club"; break;
-    case DIAMOND: result = "Diamond"; break;
-    case HEART: result = "Heart"; break;
-    case SPADE: result = "Spade"; break;
+    case CLUB: result = "Clubs"; break;
+    case DIAMOND: result = "Diamonds"; break;
+    case HEART: result = "Hearts"; break;
+    case SPADE: result = "Spades"; break;
   }
   return result;
 }
@@ -97,8 +94,14 @@ bool Card::IsOdd() {
   return (_value % 2) != 0;
 }
 
+void Card::Swap(Card &card1, Card &card2) {
+  Card temp = card1;
+  card1 = card2;
+  card2 = temp;
+}
+
 //=== GLOBAL CONSTANTS ===
 
-const Card blankCard = Card(0,0);
+const Card blankCard = Card(0, 0);
 
 #endif

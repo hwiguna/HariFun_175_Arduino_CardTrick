@@ -77,7 +77,7 @@ void setup() {
   SetupInputs();
   SetupLCD();
 
-  //randomSeed(analogRead(0));
+  randomSeed(analogRead(A5));
   //-- Unit Testing --
   Pile testDeck = Pile(); // Unlike in C#, you don't say new Class.
   testDeck.UnitTest();
@@ -98,6 +98,12 @@ void loop() {
   lcd.print(line2);
   deck.Shuffle();
   delay(500);
+  lcd.print(clearScreen);
+  delay(500);
+
+  //-- Ready to deal --
+  lcd.print("  Ready to deal");
+  WaitForButtonPress();
   lcd.print(clearScreen);
   delay(500);
 

@@ -43,7 +43,7 @@ Magician::PerformMagic(SoftwareSerial lcd) {
       bool isTimeForMarker = random(5) == 4L; // 1 in 4 chance if we should show marker card now
       if (isTimeForMarker) { // Is it time to show marker? YES
         bool showChosenOnSamePage = random(3) == 2L; // Fifty-fifty chance if we should show chosen card on same page as marker card or on next page
-        if (showChosenOnSamePage) { //
+        if (showChosenOnSamePage) {
           card1 =  _deck.TakeMarkerCard(); // Show marker card...
           card2 = _chosenCard; // immediately follow with chosen card on same page.
           hasShownChosenCard = true;

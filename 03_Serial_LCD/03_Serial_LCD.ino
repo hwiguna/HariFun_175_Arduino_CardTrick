@@ -26,15 +26,15 @@ void setup()  {
   pinMode(txPin, OUTPUT);
   mySerial.begin(9600);    // Set the data rate
   delay(10);              // wait (may not be needed w/ Arduino v1.0)
-  mySerial.print(clearScreen);
-  //mySerial.print(message);  
-  mySerial.print("v=");
-
-  int val = analogRead(A0);
   
-  mySerial.print(val);
+  //mySerial.print(message);  
+  
 }
 
 void loop() {
-  // ...
+  int val = analogRead(A0);
+  mySerial.print(clearScreen);
+  mySerial.print("v=");
+  mySerial.print(val);
+  delay(1000);
 }

@@ -45,6 +45,10 @@ void Pile::InitFullDeck() {
 
 void Pile::Shuffle() {
   for (byte i=0; i<_numberOfCards; i++) {
+    if ((i % 3)==0) {
+      lcd.print("."); // print one dot every third loop iterations because we only have 16 chars for 48 cards
+      delay(150);
+    }
     Card temp = _cards[i];
     int randomIndex = random(0,_numberOfCards);
     _cards[i] = _cards[randomIndex];

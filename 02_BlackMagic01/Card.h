@@ -3,10 +3,10 @@
 
 #include "Arduino.h"
 
-#define CLUB 1
+#define HEART 1
 #define DIAMOND 2
-#define HEART 3
-#define SPADE 4
+#define SPADE 3
+#define CLUB 4
 
 #define ACE 1
 #define JACK 10

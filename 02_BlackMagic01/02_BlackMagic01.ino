@@ -105,10 +105,5 @@ void loop() {
   Magician shinLim = Magician(deck);
   shinLim.SetChosenCard( chosenCard );
   shinLim.PerformMagic(lcd);
-
-  //  //-- Do it again? --
-  //  lcd.print(clearScreen);
-  //  lcd.print("Again?");
-  //  WaitForButtonPress();
 }
 

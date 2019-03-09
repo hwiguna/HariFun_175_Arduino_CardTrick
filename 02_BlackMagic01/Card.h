@@ -8,10 +8,10 @@
 #define SPADE 3
 #define CLUB 4
 
-#define ACE 1
 #define JACK 10
 #define QUEEN 11
 #define KING 12
+#define ACE 13
 
 class Card {
   public:
@@ -25,7 +25,7 @@ class Card {
     bool IsOdd();
     void Swap(Card &card1, Card &card2);
 
-    byte Value(); // 1..12
+    byte Value(); // 2..13
     byte Suit(); // 1..4
 
   private:
@@ -56,12 +56,10 @@ byte Card::Suit() {
 
 String Card::ValueToString(byte value) {
   //12345789*123456
-  //seven of diamonds
-  //eight
-  //
+  //seven of diamonds - Making sure the longest card would not exceed the 16 character LCD width.
+
   String result = "?";
   switch (value) {
-    case 2: 
     case ACE: result = "Ace"; break;
     case JACK: result = "Jack"; break;
     case QUEEN: result = "Queen"; break;

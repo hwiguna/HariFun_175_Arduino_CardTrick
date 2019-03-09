@@ -36,7 +36,7 @@ Pile::Pile() {
 void Pile::InitFullDeck() {
   int cardIndex = 0;
   for (byte s = 1; s <= 4; s++) {
-    for (byte v = 1; v <= 12; v++) {
+    for (byte v = 2; v <= 13; v++) {
       _cards[cardIndex++] = Card(v, s);
     }
   }

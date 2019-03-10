@@ -1,21 +1,13 @@
 // Black Magic Card Trick by Hari Wiguna, 2019
-// Works with an old SeeTron BPI-216 serial LCD I have lying around.
+// Modify for AdaFruit I2C LCD backpack because the LCD that comes with the kit is not working.
 // The secret:
 // The position of the first black suit card indicates
 // the position of where the chosen card would appear in next batch.
 
 //-- LCD Variables --
-#include <SoftwareSerial.h>
-
-#define rxPin 255       // Not used, so set to invalid pin #
-#define txPin 3         // Connect BPI/BPK's SER input to this pin.
-#define inverted 1     // In setup, 1=inverted, 0=noninverted
-
-const char clearScreen[ ] = { 254, 1, 254, 128, 0 };
-const char line1[ ] = { 254, 128, 0 };
-const char line2[ ] = { 254, 192, 0 };
-
-SoftwareSerial lcd =  SoftwareSerial(rxPin, txPin, inverted);
+#include "Wire.h"
+#include "Adafruit_LiquidCrystal.h"
+Adafruit_LiquidCrystal lcd(0);
 
 //-- BUTTON --
 byte button = 4; // Digital pin 4
@@ -41,9 +33,9 @@ Card PickACard(Pile deck) {
     if (cardIndex != prevCardIndex) { // Only refresh screen if chosen card changes
       prevCardIndex = cardIndex;
       card = deck.PeekCard(cardIndex);
-      lcd.print(clearScreen);
+      lcd.clear();
       lcd.print("Pick a card...");
-      lcd.print(line2);
+      lcd.setCursor(0,1);
       lcd.print(card.CardToString());
     }
 
@@ -55,18 +47,21 @@ Card PickACard(Pile deck) {
   }
 
   //-- Confirm chosen card --
-  lcd.print(clearScreen);
+  lcd.clear();
   lcd.print("You've chosen");
-  lcd.print(line2);
+  lcd.setCursor(0,1);
   lcd.print(card.CardToString());
 
   return card;
 }
 
 void SetupLCD() {
-  digitalWrite(txPin, LOW);   // Stop bit state for inverted serial
-  pinMode(txPin, OUTPUT);
-  lcd.begin(9600);    // Set the data rate
+  lcd.begin(16, 2); // 16 columns, 2 rows
+  lcd.clear();
+  lcd.print("* Magic Trick *");
+  lcd.setCursor(0,1);
+  lcd.print(" by Hari Wiguna "); 
+  lcd.setBacklight(HIGH);
 }
 
 void SetupInputs() {
@@ -78,7 +73,7 @@ void setup() {
   SetupInputs();
   SetupLCD();
 
-  randomSeed(analogRead(A5));
+  randomSeed(analogRead(A1)); // Get random seed from an unused Analog pin.
   //-- Unit Testing --
   Pile testDeck = Pile(); // Unlike in C#, you don't say new Class.
   testDeck.UnitTest();
@@ -94,18 +89,21 @@ void loop() {
   WaitForButtonPress();
 
   //-- Shuffle the deck --
-  lcd.print(clearScreen);
+  lcd.clear();
   lcd.print("Shuffling cards");
-  lcd.print(line2);
+  lcd.setCursor(0,1); // x,y
   deck.Shuffle();
   delay(500);
-  lcd.print(clearScreen);
+  lcd.clear();
   delay(500);
 
   //-- Ready to deal --
-  lcd.print("  Ready to deal");
+  //         123456789*123456
+  lcd.print(" Ready to deal  ");
+  lcd.setCursor(0,1);
+  lcd.print("out the cards...");
   WaitForButtonPress();
-  lcd.print(clearScreen);
+  lcd.clear();
   delay(500);
 
   //-- Perform Magic! --

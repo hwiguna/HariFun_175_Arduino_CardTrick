@@ -2,7 +2,7 @@ class Magician {
   public:
     Magician(Pile deck);
     SetChosenCard(Card chosenCard);
-    PerformMagic(Adafruit_LiquidCrystal lcd);
+    PerformMagic();
   private:
     Card _chosenCard;
     Pile _deck;
@@ -29,13 +29,13 @@ void WaitForButtonPress2() {
   delay(500); // ignore switch bounce
 }
 
-Magician::PerformMagic(Adafruit_LiquidCrystal lcd) {
+Magician::PerformMagic() {
   Serial.println("\nWas it one of these cards?");
   bool hasShownMarker = false;
   bool hasShownChosenCard = false;
+  bool isOutOfCards = false;
 
-  //while (!hasShownChosenCard) {
-  while (true) {
+  while (!isOutOfCards) {
     Card card1 = blankCard;
     Card card2 = blankCard;
 
@@ -74,8 +74,7 @@ Magician::PerformMagic(Adafruit_LiquidCrystal lcd) {
     if (card1.Value() == 0) {
       //         123456789*123456
       lcd.print(" No more cards! ");
-      lcd.setCursor(0, 1);
-      lcd.print(" (Press reset)  ");
+      isOutOfCards = true;
     } else {
       lcd.print(card1.CardToString());
       lcd.setCursor(0, 1);

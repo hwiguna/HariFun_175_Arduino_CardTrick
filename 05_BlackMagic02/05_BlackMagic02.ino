@@ -23,6 +23,13 @@ void WaitForButtonPress() {
   delay(500); // ignore switch bounce
 }
 
+void ReadyToDeal() {
+    //         123456789*123456
+  lcd.print(" Ready to deal  ");
+  lcd.setCursor(0,1);
+  lcd.print("out the cards...");
+}
+
 Card PickACard(Pile deck) {
   Card card = blankCard;
   bool buttonPressed = false;
@@ -62,6 +69,7 @@ void SetupLCD() {
   lcd.setCursor(0,1);
   lcd.print(" by Hari Wiguna "); 
   lcd.setBacklight(HIGH);
+  delay(1500);
 }
 
 void SetupInputs() {
@@ -69,15 +77,16 @@ void SetupInputs() {
 }
 
 void setup() {
+  SetupLCD();
   Serial.begin(115200);
   SetupInputs();
-  SetupLCD();
 
   randomSeed(analogRead(A1)); // Get random seed from an unused Analog pin.
   //-- Unit Testing --
-  Pile testDeck = Pile(); // Unlike in C#, you don't say new Class.
-  testDeck.UnitTest();
+//  Pile testDeck = Pile(); // Unlike in C#, you don't say new Class.
+//  testDeck.UnitTest();
 }
+
 
 void loop() {
   //-- Prepare deck --
@@ -89,26 +98,13 @@ void loop() {
   WaitForButtonPress();
 
   //-- Shuffle the deck --
-  lcd.clear();
-  lcd.print("Shuffling cards");
-  lcd.setCursor(0,1); // x,y
   deck.Shuffle();
-  delay(500);
-  lcd.clear();
-  delay(500);
-
-  //-- Ready to deal --
-  //         123456789*123456
-  lcd.print(" Ready to deal  ");
-  lcd.setCursor(0,1);
-  lcd.print("out the cards...");
+  ReadyToDeal();
   WaitForButtonPress();
-  lcd.clear();
-  delay(500);
 
   //-- Perform Magic! --
   Magician shinLim = Magician(deck);
   shinLim.SetChosenCard( chosenCard );
-  shinLim.PerformMagic(lcd);
+  shinLim.PerformMagic();
 }
 

@@ -12,7 +12,7 @@ class Pile {
     void AddTop(Card newCard);
     Card RemoveTopCard();
     void PrintAll();
-    void Shuffle();
+    void Pile::Shuffle();
     Card TakeMarkerCard();
     Card TakeNonMarkerCard();
     void RemoveByIndex(byte index);
@@ -44,6 +44,10 @@ void Pile::InitFullDeck() {
 }
 
 void Pile::Shuffle() {
+  lcd.clear();
+  lcd.print("Shuffling cards");
+  lcd.setCursor(0,1); // x,y
+  
   for (byte i=0; i<_numberOfCards; i++) {
     if ((i % 3)==0) {
       lcd.print("."); // print one dot every third loop iterations because we only have 16 chars for 48 cards
@@ -54,6 +58,10 @@ void Pile::Shuffle() {
     _cards[i] = _cards[randomIndex];
       _cards[randomIndex] = temp;
   }
+  
+  delay(500);
+  lcd.clear();
+  //delay(500);
 }
 
 void Pile::AddTop(Card newCard) {

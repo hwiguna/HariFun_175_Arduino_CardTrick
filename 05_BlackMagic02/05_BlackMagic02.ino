@@ -1,8 +1,8 @@
 // Black Magic Card Trick by Hari Wiguna, 2019
 // Modify for AdaFruit I2C LCD backpack because the LCD that comes with the kit is not working.
-// The secret:
-// The position of the first black suit card indicates
-// the position of where the chosen card would appear in next batch.
+//
+// IMPORTANT: This and previous versions have a *BUG* where I did not include 10,
+// so it went 8, 9, Jack, Queen, so Jack and Ace are considered odd.
 
 //-- LCD Variables --
 #include "Wire.h"

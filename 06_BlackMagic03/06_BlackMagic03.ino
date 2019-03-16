@@ -3,8 +3,8 @@
 // Fixing the missing 10 rank cards.
 
 // The secret:
-// The position of the first black suit card indicates
-// the position of where the chosen card would appear in next batch.
+// The chosen card is shown IMMEDIATELY right after the first BLACK suit ODD card.
+// Note: Jack is 11, Queen is 12, King is 13, and Ace is 14.
 
 //-- LCD Variables --
 #include "Wire.h"

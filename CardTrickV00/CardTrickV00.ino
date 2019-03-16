@@ -1,3 +1,5 @@
+// Ignore this file.  It was a different idea that didn't pan out.
+
 String chosenCard = "KS";
 
 String suitSequence = "CDHS"; // Club Diamond Heart Spade

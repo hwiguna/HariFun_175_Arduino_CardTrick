@@ -1,7 +1,7 @@
 # HariFun_175_Arduino_CardTrick
 
 ## Video
-[![Video](http://img.youtube.com/vi/H5MHwr1_3TI/0.jpg)](http://www.youtube.com/watch?v=H5MHwr1_3TI)
+[![Video](http://img.youtube.com/vi/w__20bg0_ts/0.jpg)](http://www.youtube.com/watch?v=w__20bg0_ts)
 
 ## Schematic
 ![Schematic](https://github.com/hwiguna/HariFun_175_Arduino_CardTrick/blob/master/Schematic.PNG "Schematic")

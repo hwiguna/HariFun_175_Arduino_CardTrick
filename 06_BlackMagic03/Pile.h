@@ -48,6 +48,7 @@ void Pile::Shuffle() {
   lcd.print("Shuffling cards");
   lcd.setCursor(0,1); // x,y
   
+  randomSeed(analogRead(A1)); // Get random seed from an unused Analog pin.
   for (byte i=0; i<_numberOfCards; i++) {
     if ((i % 3)==0) {
       lcd.print("."); // print one dot every third loop iterations because we only have 16 chars for 52 cards

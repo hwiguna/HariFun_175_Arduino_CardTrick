@@ -1,10 +1,7 @@
 // Black Magic Card Trick by Hari Wiguna, 2019
-// Modify for AdaFruit I2C LCD backpack because the LCD that comes with the kit is not working.
-// Fixing the missing 10 rank cards.
-
 // The secret:
-// The chosen card is shown IMMEDIATELY right after the first BLACK suit ODD card.
-// Note: Jack is 11, Queen is 12, King is 13, and Ace is 14.
+// The chosen card is shown IMMEDIATELY right after the first BLACK suit ODD card. Sometimes on same page, sometimes on next page, but it is ALWAYS the card right after the black odd card.
+// Note: Jack is 11*, Queen is 12, King is 13*, and Ace is 14. So Jacks and Kings are odd numbers.
 
 //-- LCD Variables --
 #include "Wire.h"
@@ -83,7 +80,6 @@ void setup() {
   Serial.begin(115200);
   SetupInputs();
 
-  randomSeed(analogRead(A1)); // Get random seed from an unused Analog pin.
   //-- Unit Testing --
 //  Pile testDeck = Pile(); // Unlike in C#, you don't say new Class.
 //  testDeck.UnitTest();

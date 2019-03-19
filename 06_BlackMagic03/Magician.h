@@ -43,14 +43,14 @@ Magician::PerformMagic() {
     if (!hasShownMarker) { // Have we shown marker yet? NO
       bool isTimeForMarker = random(5) == 4L; // 0,1,2,3,4. So 1 in 5 chance we should show marker card now
       if (isTimeForMarker) { // Is it time to show marker? YES
-        bool showChosenOnSamePage = random(3) == 2L; // 0,1,2. So, 1 in 3 chance we should show chosen card on same page as marker card or on next page
+        bool showChosenOnSamePage = random(3) == 2L; // 0,1,2. So, 1 in 3 chance we should show chosen card on same page as marker card
         if (showChosenOnSamePage) {
-          card1 =  _deck.TakeMarkerCard(); // Show marker card...
-          card2 = _chosenCard; // immediately follow with chosen card on same page.
+          card1 =  _deck.TakeMarkerCard(); // Show marker card on first row...
+          card2 = _chosenCard; // followed immediately with chosen card on second row of same page.
           hasShownChosenCard = true;
         } else {
           card1 =  _deck.TakeNonMarkerCard(); // show random non-marker card
-          card2 =  _deck.TakeMarkerCard(); // show marker card to indicate that first card on next page is chosen card.
+          card2 =  _deck.TakeMarkerCard(); // show marker card to indicate that first card on NEXT page is chosen card.
         }
         hasShownMarker = true; // either way, we would have shown marker.
       }
@@ -60,9 +60,9 @@ Magician::PerformMagic() {
       }
     }
     else { // We have shown marker on previous page, so it's time to show chosen card
-      if (!hasShownChosenCard) {
-        card1  = _chosenCard;
-        card2 =  _deck.TakeNonMarkerCard(); // show random non-marker card
+      if (!hasShownChosenCard) { // and we have NOT shown chosen card...
+        card1  = _chosenCard; // Show chosen card on row 1
+        card2 =  _deck.TakeNonMarkerCard(); // Show random non-marker card on second row
         hasShownChosenCard = true;
       } else {
         // The show is over, but let them keep spitting out remaining cards
@@ -71,18 +71,15 @@ Magician::PerformMagic() {
       }
     }
 
+    //-- Show the two cards --
     lcd.clear();
     if (card1.Value() == 0) {
-      //         123456789*123456
       lcd.print(" No more cards! ");
       isOutOfCards = true;
     } else {
       lcd.print(card1.CardToString());
       lcd.setCursor(0, 1);
       lcd.print(card2.CardToString());
-      //      card1.Print();
-      //      card2.Print();
-      //      Serial.println();
     }
 
     WaitForButtonPress2();
